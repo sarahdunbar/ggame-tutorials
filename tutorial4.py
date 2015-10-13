@@ -26,6 +26,37 @@ class SpaceGame(App):
         SpaceShip((100,100))
         SpaceShip((150,150))
         SpaceShip((200,50))
+        self.vx = 1
+        self.vy = 1
+        self.vr = 0.01
+        
+        def step(self):
+            self.x += self.vx
+            self.y += self.vy
+            self.rotation += self.vr
+        
+        self.thrust = 0
+        self.thrustframe = 1
+        SpaceGame.listenKeyEvent("keydown", "space", self.thrustOn)
+        SpaceGame.listenKeyEvent("keyup", "space", self.thrustOff)
+        
+        def thrustOn(self, event):
+            self.thrust = 1
+
+        def thrustOff(self, event):
+            self.thrust = 0
+            
+        if self.thrust == 1:
+            self.setImage(self.thrustframe)
+            self.thrustframe += 1
+            if self.thrustframe == 4:
+                self.thrustframe = 1
+        else:
+            self.setImage(0)
+            
+    def step(self):
+        for ship in self.getSpritesbyClass(SpaceShip):
+            ship.step()
         
 myapp = SpaceGame(SCREEN_WIDTH, SCREEN_HEIGHT)
 myapp.run()
